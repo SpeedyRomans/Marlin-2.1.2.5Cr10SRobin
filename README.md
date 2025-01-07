@@ -45,6 +45,51 @@ Marlin includes an abstraction layer to provide a common API for all the platfor
 
 Every new HAL opens up a world of hardware. At this time we need HALs for RP2040 and the Duet3D family of boards. A HAL that wraps an RTOS is an interesting concept that could be explored. Did you know that Marlin includes a Simulator that can run on Windows, macOS, and Linux? Join the Discord to help move these sub-projects forward!
 
+# MKS Robin Nano V3.x build and update firmware
+
+## For UART stepper (TMC2209)
+
+    Build config:
+
+    platformio.ini:
+
+    default_envs = mks_robin_nano_v3_usb_flash_drive
+
+### Configuration.h
+
+    #define MOTHERBOARD BOARD_MKS_ROBIN_NANO_V3
+    #define SERIAL_PORT -1
+    #define X_DRIVER_TYPE  TMC2209
+    #define Y_DRIVER_TYPE  TMC2209
+    #define Z_DRIVER_TYPE  TMC2209
+    #define E0_DRIVER_TYPE TMC2209
+
+    #define Z_SAFE_HOMING
+    //#define PROBE_MANUALLY
+    #define BLTOUCH
+
+    #define NOZZLE_TO_PROBE_OFFSET { -42, -10, -2 }
+    #define PROBING_MARGIN 40
+
+### Configuration_adv.h
+
+    #define E0_AUTO_FAN_PIN FAN1_PIN
+
+    #define X_CURRENT 650
+    #define Y_CURRENT 650
+    #define Z_CURRENT 1100 // For one single motor 580 mA
+    #define E0_CURRENT 650
+
+  //#define SENSORLESS_HOMING // StallGuard capable drivers only
+   #define DIAG_JUMPERS_REMOVED
+   #define MONITOR_DRIVER_STATUS
+
+    After 2021.6.7, you can use the multi-volume function.
+    Use the TF card and USB disk together:
+    #define USB_FLASH_DRIVE_SUPPORT
+    Only use TF card:
+    // #define USB_FLASH_DRIVE_SUPPORT
+
 ### Supported Platforms
 
   Platform|MCU|Example Boards
